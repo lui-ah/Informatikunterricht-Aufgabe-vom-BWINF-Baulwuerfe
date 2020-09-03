@@ -1,0 +1,22 @@
+#app {
+  display: flex;
+  flex-direction: column;
+}
+
+.row {
+  display: flex;
+}
+
+.cell {
+  width: 5px;
+  height: 5px;
+  margin: 1px;
+  border: solid 0.1px #000;
+}
+
+.BLACK {
+  background-color: #000;
+}
+.WHITE {
+  background-color: #fff;
+}
