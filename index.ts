@@ -6,7 +6,7 @@ import { karte0, karte1 } from './karten.mapdata'
 
 const appDiv: HTMLElement = document.getElementById('app'); // Unser Kontainer
  
-const app = (RAWDATA: string): void => {
+const app = (RAWDATA: string): HTMLElement[] => {
   appDiv.innerHTML = ''; // Den Kontainer leeren damit die Felder nicht untereinander auftauchen.
 
   const firstBreak = RAWDATA.indexOf('\n'); // Ich brauch den ersten Zeilenumbruch weil dieser nach der Breitenangabe kommt - Siehe karte0.txt
@@ -30,9 +30,31 @@ const app = (RAWDATA: string): void => {
       row.appendChild(cell);
     }
     appDiv.appendChild(row) // Reihe wird dem Kontainer hinzugefügt.
+    
   }
-
+ return [].slice.call(document.querySelectorAll(".cell")); 
   
 }
 
-app(karte1);
+const isWhite = (id: string): boolean => {
+  let cell = document.getElementById(id)
+  return !cell || cell.classList.contains('WHITE');
+}
+
+interface Huegel { maulwurf: HTMLElement[]; huegel: HTMLElement[] }
+
+const getHuegel = (cells: HTMLElement[]): Huegel => {
+  let huegel = cells.filter(cell => cell.classList.contains('BLACK'))
+  let maulwurfhuegel = huegel.filter(huegel => {
+    let huegelID = huegel.id.split('-'); // [X, Y]
+    let X = parseInt(huegelID[0]);
+    let Y = parseInt(huegelID[1]);
+    return (isWhite(`${X - 1}-${Y - 1}`) && isWhite(`${X}-${Y - 1}`) && isWhite(`${X + 1}-${Y + 1}`)&& isWhite(`${X + 1}-${Y}`)&& isWhite(`${X+ 1}-${Y - 1}`)&& isWhite(`${X}-${Y + 1}`)&& isWhite(`${X- 1}-${Y+ 1}`)&& isWhite(`${X- 1}-${Y+ 1}`) && isWhite(`${X- 1}-${Y}`))
+  })
+  return {maulwurf: maulwurfhuegel, huegel: huegel};
+}
+
+let cells = app(karte1);
+let huegel = getHuegel(cells);
+
+console.log(`Es gibt ${huegel.huegel.length} Hügel und ${(huegel.huegel.length - huegel.maulwurf.length) / 10} Baulwurfshügel`)
