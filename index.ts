@@ -2,7 +2,7 @@
 import './style.css';
 
 // Importiere die Karten
-import { karte0, karte1 } from './karten.mapdata'
+import { karte0, karte1, karte2, karte3 } from './karten.mapdata'
 
 const appDiv: HTMLElement = document.getElementById('app'); // Unser Kontainer
  
@@ -54,7 +54,7 @@ const getHuegel = (cells: HTMLElement[]): Huegel => {
   return {maulwurf: maulwurfhuegel, huegel: huegel};
 }
 
-let cells = app(karte1);
+let cells = app(karte3);
 let huegel = getHuegel(cells);
 
 console.log(`Es gibt ${huegel.huegel.length} Hügel und ${(huegel.huegel.length - huegel.maulwurf.length) / 10} Baulwurfshügel`)
