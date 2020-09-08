@@ -78,7 +78,6 @@ const app = () => {
   
   function getMapAndBuild(selectObject) {
     var value = selectObject.value;  
-    // buildMap(value);
     console.log(value)
   }
   karten.forEach((karte, index) => {
