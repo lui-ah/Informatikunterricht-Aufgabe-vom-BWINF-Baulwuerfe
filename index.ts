@@ -5,8 +5,10 @@ import './style.css';
 import { karte0, karte1, karte2, karte3 } from './karten.mapdata'
 
 const appDiv: HTMLElement = document.getElementById('app'); // Unser Kontainer
- 
-const app = (RAWDATA: string): HTMLElement[] => {
+let interfaceDiv: HTMLElement = document.getElementById('interface'); // Unser Interface-Kontainer.
+let output: HTMLElement = document.getElementById('output'); 
+
+const buildMap = (RAWDATA: string): HTMLElement[] => {
   appDiv.innerHTML = ''; // Den Kontainer leeren damit die Felder nicht untereinander auftauchen.
 
   const firstBreak = RAWDATA.indexOf('\n'); // Ich brauch den ersten Zeilenumbruch weil dieser nach der Breitenangabe kommt - Siehe karte0.txt
@@ -49,12 +51,50 @@ const getHuegel = (cells: HTMLElement[]): Huegel => {
     let huegelID = huegel.id.split('-'); // [X, Y]
     let X = parseInt(huegelID[0]);
     let Y = parseInt(huegelID[1]);
-    return (isWhite(`${X - 1}-${Y - 1}`) && isWhite(`${X}-${Y - 1}`) && isWhite(`${X + 1}-${Y + 1}`)&& isWhite(`${X + 1}-${Y}`)&& isWhite(`${X+ 1}-${Y - 1}`)&& isWhite(`${X}-${Y + 1}`)&& isWhite(`${X- 1}-${Y+ 1}`)&& isWhite(`${X- 1}-${Y+ 1}`) && isWhite(`${X- 1}-${Y}`))
+    return (
+      isWhite(`${X - 1}-${Y - 1}`) &&
+      isWhite(`${X}-${Y - 1}`) &&
+      isWhite(`${X + 1}-${Y + 1}`)&&
+      isWhite(`${X + 1}-${Y}`) &&
+      isWhite(`${X + 1}-${Y - 1}`) &&
+      isWhite(`${X}-${Y + 1}`) &&
+      isWhite(`${X - 1}-${Y + 1}`) &&
+      isWhite(`${X - 1}-${Y + 1}`) &&
+      isWhite(`${X - 1}-${Y}`)
+    )
   })
   return {maulwurf: maulwurfhuegel, huegel: huegel};
 }
 
-let cells = app(karte3);
-let huegel = getHuegel(cells);
 
-console.log(`Es gibt ${huegel.huegel.length} Hügel und ${(huegel.huegel.length - huegel.maulwurf.length) / 10} Baulwurfshügel`)
+
+const app = () => {
+
+  let karten = [karte0, karte1, karte2, karte3];
+
+  function selected(thing) {
+    console.log(thing)
+  }
+  
+  function getMapAndBuild(selectObject) {
+    var value = selectObject.value;  
+    // buildMap(value);
+    console.log(value)
+  }
+  karten.forEach((karte, index) => {
+    let mapName = 'karte' + index;
+    let mapOption = document.createElement('div');
+    mapOption.classList.add('mapOption');
+    mapOption.innerHTML = mapName;
+    mapOption.addEventListener('click', function() {
+        let cells = buildMap(karte);
+        let huegel = getHuegel(cells);
+        output.innerHTML = `Es gibt ${huegel.huegel.length} Hügel und ${(huegel.huegel.length - huegel.maulwurf.length) / 10} Baulwurfshügel`
+    })
+    interfaceDiv.appendChild(mapOption);
+  })
+}
+
+
+app();
+
