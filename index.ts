@@ -72,14 +72,6 @@ const app = () => {
 
   let karten = [karte0, karte1, karte2, karte3];
 
-  function selected(thing) {
-    console.log(thing)
-  }
-  
-  function getMapAndBuild(selectObject) {
-    var value = selectObject.value;  
-    console.log(value)
-  }
   karten.forEach((karte, index) => {
     let mapName = 'karte' + index;
     let mapOption = document.createElement('div');
